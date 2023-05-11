@@ -27,7 +27,7 @@ const Register = () => {
             localStorage.setItem('user', JSON.stringify(response.data.accessToken));
             let now = new Date();
             localStorage.setItem('ttl', JSON.stringify(now.getTime() + (86400000 * 7)));
-            window.location.replace('http://localhost:3000/');
+            window.location.replace('https://pex.sigve.dev/');
         } else {
             alert('There was an error registering your account.');
         }
