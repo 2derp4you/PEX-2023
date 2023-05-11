@@ -105,7 +105,7 @@ const Dashboard = ({user}) => {
             <div className="intro">
                 <h1>Dashboard</h1>
                 <p>Welcome, {user.firstname} {user.lastname}!</p>
-                <p>You are logged in as {user.isAdmin ? 'an admin' : 'a user'}.</p>
+                <p>You are logged in as <span className="hightlitedText">{user.isAdmin ? 'an admin' : 'a user'}</span>.</p>
                 <button onClick={() => {
                     localStorage.removeItem('user');
                     localStorage.removeItem('ttl');
