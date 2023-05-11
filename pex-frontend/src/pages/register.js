@@ -15,7 +15,7 @@ const Register = () => {
             isAdmin = true;
         }
 
-        const response = await axios.post('http://localhost:5000/user/register', {
+        const response = await axios.post('https://api.sigve.dev/user/register', {
             firstname: document.getElementById('fname').value,
             lastname: document.getElementById('lname').value,
             email: document.getElementById('email').value,

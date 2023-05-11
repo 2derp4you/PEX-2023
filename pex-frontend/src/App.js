@@ -12,7 +12,7 @@ function App() {
 
   useEffect(() => {
     const checkUser = async () => {
-      const response = await axios.get('http://localhost:5000/auth', {
+      const response = await axios.get('https://api.sigve.dev/auth', {
         headers: {
           Authorization: JSON.parse(localStorage.getItem('user'))
         }

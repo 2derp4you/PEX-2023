@@ -10,7 +10,7 @@ const Dashboard = ({user}) => {
     }, []);
 
     const getMeetings = async () => {
-        const response = await axios.get('http://localhost:5000/meeting', { withCredentials: true });
+        const response = await axios.get('https://api.sigve.dev/meeting', { withCredentials: true });
         if(response.data) {
             setMeetings(response.data);
         }
@@ -40,7 +40,7 @@ const Dashboard = ({user}) => {
                 confirmed = true;
             }
 
-            const response = await axios.post('http://localhost:5000/meeting/add', {
+            const response = await axios.post('https://api.sigve.dev/meeting/add', {
                 title: title,
                 date: date,
                 time: time,
@@ -64,7 +64,7 @@ const Dashboard = ({user}) => {
 
     const deleteMeeting = async (id) => {
         try {
-            const response = await axios.delete('http://localhost:5000/meeting/' + id, { withCredentials: true });
+            const response = await axios.delete('https://api.sigve.dev/meeting/' + id, { withCredentials: true });
             if(response.status === 200) {
                 toast('Meeting Canceld!', {
                     duration: 1500,
@@ -83,7 +83,7 @@ const Dashboard = ({user}) => {
 
     const confirmMeeting = async (id) => {
         try {
-            const response = await axios.put('http://localhost:5000/meeting/' + id, {}, { withCredentials: true });
+            const response = await axios.put('https://api.sigve.dev/meeting/' + id, {}, { withCredentials: true });
             if(response.status === 200) {
                 toast('Meeting Approved!', {
                     duration: 1500,
