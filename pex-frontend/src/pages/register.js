@@ -9,18 +9,12 @@ const Register = () => {
             return;
         }
 
-        let isAdmin = false;
-
-        if(document.getElementById('switch').checked) {
-            isAdmin = true;
-        }
-
         const response = await axios.post('https://api.sigve.dev/user/register', {
             firstname: document.getElementById('fname').value,
             lastname: document.getElementById('lname').value,
             email: document.getElementById('email').value,
             password: document.getElementById('pass').value,
-            isAdmin: isAdmin
+            isAdmin: false
         });
         console.log(response);
         if(response.status === 200) {
@@ -51,11 +45,6 @@ const Register = () => {
                 <input type="password" id="pass" name="pass" required />
                 <label htmlFor="pass2">Confirm password</label>
                 <input type="password" id="pass2" name="pass2" required />
-                <label htmlFor="switch">
-                  <input type="checkbox" id="switch" name="switch" role="switch" />
-                  admin
-                </label>
-                <small>By registering, you agree to our <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>.</small><br />
                 <small>Have an account? <a href="/login">Log in</a></small>
                 <button type="submit">Register</button>
             </form>
