@@ -74,4 +74,24 @@ router.get('/login/:email/:pass', async (req, res) => {
     }
 });
 
+router.get('/all', async (req, res) => {
+    try {
+        const users = await User.find();
+        res.status(200).json(users);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+router.put("/admin", async (req, res) => {
+    try {
+        const user = await User.findByIdAndUpdate(req.body.id, {
+            isAdmin: req.body.isAdmin,
+        });
+        res.status(200).json("The user has been updated!");
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
 module.exports = router;

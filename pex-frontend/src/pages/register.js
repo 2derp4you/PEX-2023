@@ -55,6 +55,7 @@ const Register = () => {
                   <input type="checkbox" id="switch" name="switch" role="switch" />
                   admin
                 </label>
+                <small>By registering, you agree to our <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>.</small><br />
                 <small>Have an account? <a href="/login">Log in</a></small>
                 <button type="submit">Register</button>
             </form>

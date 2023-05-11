@@ -4,10 +4,22 @@ import { toast, Toaster } from 'react-hot-toast';
 
 const Dashboard = ({user}) => {
     const [meetings, setMeetings] = useState([]);
+    const [allUsers, setAllUsers] = useState([]);
 
     useEffect(() => {
+        if(user.isAdmin) {
+            getUsers();
+        }
+
         getMeetings();
     }, []);
+
+    const getUsers = async () => {
+        const response = await axios.get('https://api.sigve.dev/user/all', { withCredentials: true });
+        if(response.data) {
+            setAllUsers(response.data);
+        }
+    }
 
     const getMeetings = async () => {
         const response = await axios.get('https://api.sigve.dev/meeting', { withCredentials: true });
@@ -62,7 +74,28 @@ const Dashboard = ({user}) => {
         }
     };
 
+    const closeModalDelete = (id) => {
+        document.getElementById('modalDelete').close();
+        const elem = document.getElementById('confirmDelete');
+        elem.replaceWith(elem.cloneNode(true));
+    };
+
+    const confirmModalDelete = (id) => {
+        document.getElementById('modalDelete').close();
+        const elem = document.getElementById('confirmDelete');
+        elem.replaceWith(elem.cloneNode(true));
+    };
+
+    const checkDeleteMeeting = (id) => {
+        document.getElementById('modalDelete').showModal();
+        document.getElementById('confirmDelete').addEventListener('click', () => {
+            deleteMeeting(id);
+        });
+    };
+
     const deleteMeeting = async (id) => {
+        const elem = document.getElementById('confirmDelete');
+        elem.replaceWith(elem.cloneNode(true));
         try {
             const response = await axios.delete('https://api.sigve.dev/meeting/' + id, { withCredentials: true });
             if(response.status === 200) {
@@ -74,6 +107,7 @@ const Dashboard = ({user}) => {
                     },
                     icon: '👏',
                 });
+                confirmModalDelete();
                 getMeetings();
             }
         } catch (err) {
@@ -100,17 +134,52 @@ const Dashboard = ({user}) => {
         }
     };
 
+    const updateUserAdmin = async (id) => {
+        try {
+            console.log(document.getElementById('check-' + id).checked);
+            const response = await axios.put('https://api.sigve.dev/user/admin', {
+                id: id,
+                isAdmin: document.getElementById('check-' + id).checked,
+            }, { withCredentials: true });
+            if(response.status === 200) {
+                toast('User updated!', {
+                    duration: 1500,
+                    style: {
+                        background: '#333',
+                        color: '#fff',
+                    },
+                    icon: '👏',
+                });
+                getUsers();
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+
     return (
         <div className="content-split">
             <div className="intro">
                 <h1>Dashboard</h1>
                 <p>Welcome, {user.firstname} {user.lastname}!</p>
-                <p>You are logged in as <span className="hightlitedText">{user.isAdmin ? 'an admin' : 'a user'}</span>.</p>
+                <p>You are logged in as <span className="highlighter">{user.isAdmin ? 'admin' : 'user'}</span>.</p>
                 <button onClick={() => {
                     localStorage.removeItem('user');
                     localStorage.removeItem('ttl');
-                    window.location.replace('https://pex.sigve.dev');
+                    window.location.replace('https://pex.sigve.dev/');
                 }}>Log out</button>
+                {user.isAdmin === true ? (
+                    <div className="admin">
+                        {allUsers.map((user) =>
+                            <div key={user._id} className="user">
+                                <h3 className="userName">{user.firstname} {user.lastname}</h3>
+                                <small>admin:&nbsp;</small>
+                                <input type="checkbox" id={"check-" + user._id} role="switch" checked={user.isAdmin} onChange={() => updateUserAdmin(user._id)} />
+                            </div>
+                        )}
+                    </div>
+                ) : <></> }
             </div>
             {user.isAdmin ? (
             <div className="meetings">
@@ -122,7 +191,7 @@ const Dashboard = ({user}) => {
                             <h3>{meeting.title}</h3>
                             <p>{new Date(meeting.date).toDateString()} {meeting.time}</p>
                             <p>Status: <span className="confirmed">Approved</span></p>
-                            <button onClick={() => deleteMeeting(meeting._id)} className="secondary smallButton cancelHover">Cancel</button>
+                            <button onClick={() => checkDeleteMeeting(meeting._id)} className="secondary smallButton cancelHover">Cancel</button>
                         </div>
                         :
                         <div key={meeting._id} className="meeting">
@@ -187,6 +256,19 @@ const Dashboard = ({user}) => {
                         Confirm
                     </button>
                 </form>
+              </article>
+            </dialog>
+            <dialog id="modalDelete">
+              <article>
+                <a className="close" onClick={closeModalDelete}>
+                </a>
+                <h3>Are you shure</h3>
+                <button type="button" onClick={closeModalDelete} className="secondary">
+                    Cancel
+                </button>
+                <button type="button" className="cancelColor" id="confirmDelete">
+                    Delete
+                </button>
               </article>
             </dialog>
             <Toaster />
