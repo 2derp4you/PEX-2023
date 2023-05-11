@@ -109,7 +109,7 @@ const Dashboard = ({user}) => {
                 <button onClick={() => {
                     localStorage.removeItem('user');
                     localStorage.removeItem('ttl');
-                    window.location.replace('http://localhost:3000/');
+                    window.location.replace('https://pex.sigve.dev');
                 }}>Log out</button>
             </div>
             {user.isAdmin ? (
@@ -168,6 +168,7 @@ const Dashboard = ({user}) => {
                 <p>
                   Send a meeting request.
                 </p>
+                <br />
                 <form onSubmit={newMeeting}>
                     <label htmlFor="title">Title</label>
                     <input type="text" id="title" name="title" placeholder="Title" required />
