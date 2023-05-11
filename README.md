@@ -1,4 +1,4 @@
-# Sigve Prøve-Eksamen 2023
+# Sigve Prøve-Eksamen 2023 [Live](https://pex.sigve.dev)
 Dette repositorie innholder frontend og backenden til min pex oppgave 2023.
 
 Frontend is buildt on react and backend is buildt on nodejs.
